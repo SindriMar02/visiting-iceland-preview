@@ -1,10 +1,206 @@
 /* VISITING ICELAND — lakeview composition, vita-travel motion system (verbatim values,
    see _docs/vita-travel-teardown.md). All numbers computed from _data/*.json. */
 (async function () {
-  const [catalogue, places] = await Promise.all([
+  // The catalogue is fetched now but awaited LATER: the opening reveal must
+  // start on the first frame, not after two JSON files land.
+  const dataReady = Promise.all([
     fetch("_data/catalogue.json").then(r => r.json()),
     fetch("_data/places.json").then(r => r.json()),
   ]);
+
+  // the film autoplays from the markup (src is declared there); the reveal only
+  // nudges it back to the top so the hero starts on frame 0 = the loader's photo
+  const heroVideo = document.getElementById("heroVideo");
+  heroVideo.play().catch(() => {});
+  const releaseVideo = () => {
+    try { heroVideo.currentTime = 0; } catch (e) {}
+    heroVideo.play().catch(() => {});
+  };
+
+  // ================= THE VITA MOTION SYSTEM (values verbatim) =================
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobile = matchMedia("(max-width: 767px)").matches;
+  const motionOn = !reduced && !!window.gsap;
+  if (!motionOn) {
+    document.body.classList.remove("is-loading");
+    const ld = document.getElementById("loader");
+    if (ld) ld.classList.add("is-done");
+  }
+
+  const D = { dur: 0.8, dist: 40, ease: "power3.out", start: "top 88%" }; // vita defaults
+
+  function st(el) {
+    const s = new SplitText(el, { type: "lines", linesClass: "split-line" });
+    s.lines.forEach(line => {
+      const wrap = document.createElement("div");
+      wrap.style.overflow = "hidden";
+      line.parentNode.insertBefore(wrap, line);
+      wrap.appendChild(line);
+    });
+    gsap.set(s.lines, { yPercent: 100 });
+    return s;
+  }
+  const maskIn = (tl, split, at, d = 0.7, stag = 0.08) =>
+    tl.to(split.lines, { yPercent: 0, duration: d, ease: D.ease, stagger: stag }, at);
+
+  function typewriter(el) {
+    const s = new SplitText(el, { type: "chars", charsClass: "tw-char" });
+    gsap.set(s.chars, { opacity: 0 });
+    return s;
+  }
+  const twIn = (tl, split, at) => {
+    tl.to(split.chars, {
+      keyframes: [
+        { opacity: 0.4, duration: 0.06, ease: "none" },
+        { opacity: 1, duration: 0.18, ease: "power1.out" },
+      ],
+      stagger: 0.03,
+    }, at);
+    return at + split.chars.length * 0.03 * 0.5;
+  };
+
+  const fadeUp = (tl, el, at, dist = 30, d = 0.8) => el && tl.fromTo(el, { opacity: 0, y: dist }, { opacity: 1, y: 0, duration: d, ease: D.ease }, at);
+  const slideIn = (tl, el, at) => el && tl.fromTo(el, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.8, ease: D.ease }, at);
+  const pop = (tl, el, at) => {
+    if (!el) return;
+    el.style.transition = "none"; // vita: kill CSS transition before GSAP touches a button
+    tl.fromTo(el, { scale: 0, opacity: 0 }, {
+      scale: 1, opacity: 1, duration: 0.5, ease: "power2.out",
+      clearProps: "transform,opacity",
+      onComplete: () => { el.style.transition = ""; },
+    }, at);
+  };
+
+  const claimed = new Set();
+  function autoWire() {
+    document.querySelectorAll("[data-lines], [data-fade-up], [data-tw], [data-pop]").forEach(el => {
+      if (claimed.has(el)) return;
+      claimed.add(el);
+      if (el.hasAttribute("data-pop")) {
+        gsap.set(el, { scale: 0, opacity: 0 });
+        ScrollTrigger.create({ trigger: el, start: "top 92%", once: true, onEnter: () => { const tl = gsap.timeline(); pop(tl, el, 0); } });
+        return;
+      }
+      if (mobile || el.hasAttribute("data-fade-up")) {
+        gsap.set(el, { opacity: 0, y: 30 });
+        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: D.dur, ease: D.ease }) });
+        return;
+      }
+      if (el.hasAttribute("data-tw")) {
+        const s = typewriter(el);
+        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => { const tl = gsap.timeline(); twIn(tl, s, 0); } });
+      } else {
+        const s = st(el);
+        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => { const tl = gsap.timeline(); maskIn(tl, s, 0); } });
+      }
+    });
+  }
+
+  if (motionOn) {
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  if (!mobile && matchMedia("(pointer: fine)").matches && window.Lenis) {
+    const lenis = new Lenis({ lerp: 0.11 }); // stands in for vita ScrollSmoother smooth:1.2
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  // ---------------- opening reveal: birtingaholt loader, values lifted verbatim ----------------
+  // words rise 1.25/expo.inOut stagger .12 → box opens → frame grows to swallow → hero type rises
+  const heroTl = gsap.timeline({ paused: true });
+  heroTl.fromTo(".hero__nav > *", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.8, ease: D.ease, stagger: 0.06 }, 0);
+  fadeUp(heroTl, document.getElementById("heroChip"), 0.1, -40);
+  const heroTitle = document.getElementById("heroTitle");
+  if (!mobile) {
+    const s = st(heroTitle);
+    maskIn(heroTl, s, 0.25, 0.8);
+  } else fadeUp(heroTl, heroTitle, 0.25);
+  fadeUp(heroTl, document.getElementById("heroPara"), 0.75);
+  pop(heroTl, document.getElementById("heroCta"), 0.9);
+
+  (async function loader() {
+    // wait for the loader's own face so the wordmark cannot swap from the
+    // fallback serif in the middle of the reveal (capped, never blocks forever)
+    try {
+      await Promise.race([
+        document.fonts && document.fonts.load('500 4rem "Newsreader"'),
+        new Promise(r => setTimeout(r, 700)),
+      ]);
+    } catch (e) { /* proceed regardless */ }
+    const el = document.getElementById("loader");
+    if (!el) { document.body.classList.remove("is-loading"); heroTl.play(); return; }
+    // the loader's photo layer is sized to the HERO FRAME's exact rect from the
+    // start, so the box clips a crop identical to the hero video's object-fit
+    // cover. The grow lands on that rect + radius, and the swap is a hard cut
+    // between identical pixels: no fade, no size jump, no frame jump.
+    const frameEl = document.querySelector(".hero.frame");
+    const growEl = document.getElementById("loaderGrow");
+    const boxEl = document.getElementById("loaderBox");
+    const scrim = document.querySelector(".hero__scrim");
+
+    // Phase 1 (the wordmark moment) happens on the loader's little photo window:
+    // it never changes size, it OPENS by clip-path, and its image is positioned
+    // to show the exact centre crop the hero shows — so it reads as a peephole
+    // onto the page that is already behind it.
+    const sizeWindow = () => {
+      const fr = frameEl.getBoundingClientRect();
+      const b = boxEl.getBoundingClientRect();
+      gsap.set(".loader_frame", { width: fr.width, height: fr.height, x: -(fr.width - b.width) / 2, y: -(fr.height - b.height) / 2 });
+    };
+    sizeWindow();
+
+    // Phase 2: the loader hands over BEFORE anything grows, and the expansion is
+    // then performed on the REAL hero via clip-path — the pixels under the window
+    // are the live film the whole way, so there is nothing to "snap" between.
+    // Scrim, nav, chip, headline, paragraph and button ride the same timeline.
+    // two-stage handoff: at `handoff` the loader's ground and window disappear
+    // onto identical pixels, but the wordmark lives on and dissolves across the
+    // expansion; `finish` removes the (empty, transparent) loader afterwards.
+    const handoff = () => {
+      document.body.classList.remove("is-loading");
+      el.classList.add("is-handoff");
+      releaseVideo();
+      ScrollTrigger.refresh();
+    };
+    const finish = () => el.classList.add("is-done");
+
+    const b0 = boxEl.getBoundingClientRect();
+    const f0 = frameEl.getBoundingClientRect();
+    // the window's rect expressed as an inset on the hero frame
+    const insetStart = `inset(${((b0.top - f0.top) / f0.height * 100).toFixed(2)}% ${((f0.right - b0.right) / f0.width * 100).toFixed(2)}% ${((f0.bottom - b0.bottom) / f0.height * 100).toFixed(2)}% ${((b0.left - f0.left) / f0.width * 100).toFixed(2)}% round 8px)`;
+    const insetEnd = `inset(0% 0% 0% 0% round ${getComputedStyle(frameEl).borderRadius})`;
+
+    gsap.set(frameEl, { clipPath: insetStart });
+    gsap.set(scrim, { opacity: 0 });
+
+    const tl = gsap.timeline({ defaults: { ease: "expo.inOut" } });
+    tl.fromTo(".loader_word i", { yPercent: 100, y: 0 }, { yPercent: 0, duration: 1.25, stagger: 0.12 })  // y:0 is load-bearing: without it GSAP parses the CSS park as a base offset and doubles it
+      .fromTo(growEl, { clipPath: "inset(0% 50% 0% 50% round 8px)" },
+                      { clipPath: "inset(0% 0% 0% 0% round 8px)", duration: 1.25 }, "<1.05")
+      .fromTo(".loader_word--a", { x: "0em" }, { x: "-0.6em", duration: 1.25 }, "<")
+      .fromTo(".loader_word--b", { x: "0em" }, { x: "0.6em", duration: 1.25 }, "<")
+      // hand over: loader disappears onto pixels that are already identical
+      // the rise is done, so release the masks — the words must dissolve in the
+      // open, not slide out of the clip that made the rise possible
+      .set(".loader_word", { overflow: "visible" })
+      .addLabel("open", ">0.12")                      // a beat on the composed wordmark
+      .call(handoff, [], "open")
+      // the hero itself opens; scrim, wordmark and type all ride this expansion
+      .to(frameEl, { clipPath: insetEnd, duration: 1.8 }, "open")
+      .to(scrim, { opacity: 1, duration: 1.4, ease: "power2.out" }, "open+=0.2")
+      .to(".loader_word", { autoAlpha: 0, duration: 1.15, ease: "power1.inOut" }, "open-=0.3")
+      .to(".loader_word--a", { x: "-1.05em", duration: 1.6, ease: "power2.inOut" }, "open")
+      .to(".loader_word--b", { x: "1.05em", duration: 1.6, ease: "power2.inOut" }, "open")
+      .call(() => heroTl.play(), [], "open+=0.55")
+      .call(finish, [], "open+=1.2");
+    // never let the curtain hold the page hostage (birtingaholt failsafe)
+    gsap.delayedCall(9, () => { if (document.body.classList.contains("is-loading")) { tl.progress(1, false); } });
+  })();
+  }
+
+  // ---- the catalogue: everything below needs data ----
+  const [catalogue, places] = await dataReady;
 
   // ---------------- data prep ----------------
   const seen = new Set();
@@ -52,15 +248,6 @@
   const aboutTall = claim(byId(679628));                    // Golden Circle luxury
   const aboutPair = [claim(byId(853811)), claim(byId(1035331))]; // Akureyri whales · Silver Circle
   const whyPicks = [claim(byId(6937)), claim(byId(1030324))];    // Superview ATV · Glacier lagoon
-
-  // the film autoplays from the markup (src is declared there); the reveal only
-  // nudges it back to the top so the hero starts on frame 0 = the loader's photo
-  const heroVideo = document.getElementById("heroVideo");
-  heroVideo.play().catch(() => {});
-  const releaseVideo = () => {
-    try { heroVideo.currentTime = 0; } catch (e) {}
-    heroVideo.play().catch(() => {});
-  };
 
   document.getElementById("aboutTall").innerHTML = `<img src="${photo(aboutTall, 1200)}" alt="${aboutTall.title.trim()} — ${aboutTall.vendor}" loading="lazy" width="900" height="1000">`;
   document.getElementById("aboutPair").innerHTML = aboutPair.map(p =>
@@ -288,181 +475,12 @@
     pageNav.setAttribute("aria-hidden", String(en.isIntersecting));
   }, { rootMargin: "-80px 0px 0px 0px" }).observe(hero);
 
-  // ================= THE VITA MOTION SYSTEM (values verbatim) =================
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const mobile = matchMedia("(max-width: 767px)").matches;
-
-  if (reduced || !window.gsap) {
+  if (!motionOn) {
     document.querySelectorAll("[data-count]").forEach(el => {
       el.innerHTML = el.innerHTML.replace(/^0/, el.dataset.count);
     });
-    document.body.classList.remove("is-loading");
-    const ld = document.getElementById("loader");
-    ld && ld.classList.add("is-done");
     return;
   }
-
-  gsap.registerPlugin(ScrollTrigger, SplitText);
-
-  if (!mobile && matchMedia("(pointer: fine)").matches && window.Lenis) {
-    const lenis = new Lenis({ lerp: 0.11 }); // stands in for vita ScrollSmoother smooth:1.2
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(t => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
-
-  const D = { dur: 0.8, dist: 40, ease: "power3.out", start: "top 88%" }; // vita defaults
-
-  function st(el) {
-    const s = new SplitText(el, { type: "lines", linesClass: "split-line" });
-    s.lines.forEach(line => {
-      const wrap = document.createElement("div");
-      wrap.style.overflow = "hidden";
-      line.parentNode.insertBefore(wrap, line);
-      wrap.appendChild(line);
-    });
-    gsap.set(s.lines, { yPercent: 100 });
-    return s;
-  }
-  const maskIn = (tl, split, at, d = 0.7, stag = 0.08) =>
-    tl.to(split.lines, { yPercent: 0, duration: d, ease: D.ease, stagger: stag }, at);
-
-  function typewriter(el) {
-    const s = new SplitText(el, { type: "chars", charsClass: "tw-char" });
-    gsap.set(s.chars, { opacity: 0 });
-    return s;
-  }
-  const twIn = (tl, split, at) => {
-    tl.to(split.chars, {
-      keyframes: [
-        { opacity: 0.4, duration: 0.06, ease: "none" },
-        { opacity: 1, duration: 0.18, ease: "power1.out" },
-      ],
-      stagger: 0.03,
-    }, at);
-    return at + split.chars.length * 0.03 * 0.5;
-  };
-
-  const fadeUp = (tl, el, at, dist = 30, d = 0.8) => el && tl.fromTo(el, { opacity: 0, y: dist }, { opacity: 1, y: 0, duration: d, ease: D.ease }, at);
-  const slideIn = (tl, el, at) => el && tl.fromTo(el, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.8, ease: D.ease }, at);
-  const pop = (tl, el, at) => {
-    if (!el) return;
-    el.style.transition = "none"; // vita: kill CSS transition before GSAP touches a button
-    tl.fromTo(el, { scale: 0, opacity: 0 }, {
-      scale: 1, opacity: 1, duration: 0.5, ease: "power2.out",
-      clearProps: "transform,opacity",
-      onComplete: () => { el.style.transition = ""; },
-    }, at);
-  };
-
-  const claimed = new Set();
-  function autoWire() {
-    document.querySelectorAll("[data-lines], [data-fade-up], [data-tw], [data-pop]").forEach(el => {
-      if (claimed.has(el)) return;
-      claimed.add(el);
-      if (el.hasAttribute("data-pop")) {
-        gsap.set(el, { scale: 0, opacity: 0 });
-        ScrollTrigger.create({ trigger: el, start: "top 92%", once: true, onEnter: () => { const tl = gsap.timeline(); pop(tl, el, 0); } });
-        return;
-      }
-      if (mobile || el.hasAttribute("data-fade-up")) {
-        gsap.set(el, { opacity: 0, y: 30 });
-        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: D.dur, ease: D.ease }) });
-        return;
-      }
-      if (el.hasAttribute("data-tw")) {
-        const s = typewriter(el);
-        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => { const tl = gsap.timeline(); twIn(tl, s, 0); } });
-      } else {
-        const s = st(el);
-        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => { const tl = gsap.timeline(); maskIn(tl, s, 0); } });
-      }
-    });
-  }
-
-  // ---------------- opening reveal: birtingaholt loader, values lifted verbatim ----------------
-  // words rise 1.25/expo.inOut stagger .12 → box opens → frame grows to swallow → hero type rises
-  const heroTl = gsap.timeline({ paused: true });
-  heroTl.fromTo(".hero__nav > *", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.8, ease: D.ease, stagger: 0.06 }, 0);
-  fadeUp(heroTl, document.getElementById("heroChip"), 0.1, -40);
-  const heroTitle = document.getElementById("heroTitle");
-  if (!mobile) {
-    const s = st(heroTitle);
-    maskIn(heroTl, s, 0.25, 0.8);
-  } else fadeUp(heroTl, heroTitle, 0.25);
-  fadeUp(heroTl, document.getElementById("heroPara"), 0.75);
-  pop(heroTl, document.getElementById("heroCta"), 0.9);
-
-  (function loader() {
-    const el = document.getElementById("loader");
-    if (!el) { document.body.classList.remove("is-loading"); heroTl.play(); return; }
-    // the loader's photo layer is sized to the HERO FRAME's exact rect from the
-    // start, so the box clips a crop identical to the hero video's object-fit
-    // cover. The grow lands on that rect + radius, and the swap is a hard cut
-    // between identical pixels: no fade, no size jump, no frame jump.
-    const frameEl = document.querySelector(".hero.frame");
-    const growEl = document.getElementById("loaderGrow");
-    const boxEl = document.getElementById("loaderBox");
-    const scrim = document.querySelector(".hero__scrim");
-
-    // Phase 1 (the wordmark moment) happens on the loader's little photo window:
-    // it never changes size, it OPENS by clip-path, and its image is positioned
-    // to show the exact centre crop the hero shows — so it reads as a peephole
-    // onto the page that is already behind it.
-    const sizeWindow = () => {
-      const fr = frameEl.getBoundingClientRect();
-      const b = boxEl.getBoundingClientRect();
-      gsap.set(".loader_frame", { width: fr.width, height: fr.height, x: -(fr.width - b.width) / 2, y: -(fr.height - b.height) / 2 });
-    };
-    sizeWindow();
-
-    // Phase 2: the loader hands over BEFORE anything grows, and the expansion is
-    // then performed on the REAL hero via clip-path — the pixels under the window
-    // are the live film the whole way, so there is nothing to "snap" between.
-    // Scrim, nav, chip, headline, paragraph and button ride the same timeline.
-    // two-stage handoff: at `handoff` the loader's ground and window disappear
-    // onto identical pixels, but the wordmark lives on and dissolves across the
-    // expansion; `finish` removes the (empty, transparent) loader afterwards.
-    const handoff = () => {
-      document.body.classList.remove("is-loading");
-      el.classList.add("is-handoff");
-      releaseVideo();
-      ScrollTrigger.refresh();
-    };
-    const finish = () => el.classList.add("is-done");
-
-    const b0 = boxEl.getBoundingClientRect();
-    const f0 = frameEl.getBoundingClientRect();
-    // the window's rect expressed as an inset on the hero frame
-    const insetStart = `inset(${((b0.top - f0.top) / f0.height * 100).toFixed(2)}% ${((f0.right - b0.right) / f0.width * 100).toFixed(2)}% ${((f0.bottom - b0.bottom) / f0.height * 100).toFixed(2)}% ${((b0.left - f0.left) / f0.width * 100).toFixed(2)}% round 8px)`;
-    const insetEnd = `inset(0% 0% 0% 0% round ${getComputedStyle(frameEl).borderRadius})`;
-
-    gsap.set(frameEl, { clipPath: insetStart });
-    gsap.set(scrim, { opacity: 0 });
-
-    const tl = gsap.timeline({ defaults: { ease: "expo.inOut" } });
-    tl.fromTo(".loader_word i", { yPercent: 100 }, { yPercent: 0, duration: 1.25, stagger: 0.12 })
-      .fromTo(growEl, { clipPath: "inset(0% 50% 0% 50% round 8px)" },
-                      { clipPath: "inset(0% 0% 0% 0% round 8px)", duration: 1.25 }, "<1.05")
-      .fromTo(".loader_word--a", { x: "0em" }, { x: "-0.6em", duration: 1.25 }, "<")
-      .fromTo(".loader_word--b", { x: "0em" }, { x: "0.6em", duration: 1.25 }, "<")
-      // hand over: loader disappears onto pixels that are already identical
-      // the rise is done, so release the masks — the words must dissolve in the
-      // open, not slide out of the clip that made the rise possible
-      .set(".loader_word", { overflow: "visible" })
-      .addLabel("open", ">0.12")                      // a beat on the composed wordmark
-      .call(handoff, [], "open")
-      // the hero itself opens; scrim, wordmark and type all ride this expansion
-      .to(frameEl, { clipPath: insetEnd, duration: 1.8 }, "open")
-      .to(scrim, { opacity: 1, duration: 1.4, ease: "power2.out" }, "open+=0.2")
-      .to(".loader_word", { autoAlpha: 0, duration: 1.15, ease: "power1.inOut" }, "open-=0.3")
-      .to(".loader_word--a", { x: "-1.05em", duration: 1.6, ease: "power2.inOut" }, "open")
-      .to(".loader_word--b", { x: "1.05em", duration: 1.6, ease: "power2.inOut" }, "open")
-      .call(() => heroTl.play(), [], "open+=0.55")
-      .call(finish, [], "open+=1.2");
-    // never let the curtain hold the page hostage (birtingaholt failsafe)
-    gsap.delayedCall(9, () => { if (document.body.classList.contains("is-loading")) { tl.progress(1, false); } });
-  })();
 
   // ---------------- the flow layer: everything drifts with scroll (no pinning) ----------------
   // hero headline rises and thins as the hero leaves; media breathes behind it

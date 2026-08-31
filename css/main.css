@@ -76,7 +76,12 @@ body.is-loading { overflow: hidden; }
 .loader_word { display: flex; overflow: clip; }
 .loader_word--a { justify-content: flex-end; }
 .loader_word--b { justify-content: flex-start; }
-.loader_word i { font-style: normal; display: inline-block; }
+/* parked in CSS, not by JS: otherwise the words paint at their natural
+   position for a frame, then jump down when GSAP sets them, then rise */
+.loader_word i { font-style: normal; display: inline-block; transform: translateY(100%); }
+/* the loader's own face must be loaded before it animates, or the wordmark
+   swaps from the fallback serif mid-reveal */
+.loader_line { font-synthesis: none; }
 /* the box is geometrically STATIC from frame one: the photo window opens by
    clip-path, never by layout, so the image inside can be aligned exactly onto
    the hero frame's crop and never drifts */
