@@ -76,6 +76,7 @@
     return `Free cancellation up to ${when} before departure. After that the operator charges ${r.charge}${r.type === 'percentage' ? '%' : ' ISK'}.`;
   };
 
+  document.title = `${product.title} · Visiting Iceland`;
   root.removeAttribute('aria-busy');
   root.innerHTML = `
     <p class="tour__crumb"><a href="/visiting-iceland-preview/">Visiting Iceland</a> <span>/</span> <span>${esc(product.vendor)}</span></p>
@@ -180,7 +181,7 @@
       const price = priceFor(c.id);
       return `<div class="pax__row">
         <span class="t">${esc(c.title)}
-          <span class="sub">${c.ageQualified && c.minAge != null ? `Age ${c.minAge}–${c.maxAge}` : ''}${price ? (c.ageQualified && c.minAge != null ? ' · ' : '') + isk(price) : ''}</span>
+          <span class="sub">${c.ageQualified && c.minAge != null ? `Age ${c.minAge}-${c.maxAge}` : ''}${price ? (c.ageQualified && c.minAge != null ? ' · ' : '') + isk(price) : ''}</span>
         </span>
         <span class="stepper">
           <button data-cat="${c.id}" data-d="-1" ${qty <= 0 ? 'disabled' : ''} aria-label="Fewer ${esc(c.title)}">−</button>

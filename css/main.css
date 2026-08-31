@@ -1,4 +1,4 @@
-/* VISITING ICELAND — lakeview.is landing composition (values lifted from
+/* VISITING ICELAND - lakeview.is landing composition (values lifted from
    post-8.css + measured teardown) × vita-travel motion system (app.min.js).
    References: _docs/lakeview-teardown.md · _docs/vita-travel-teardown.md.
    Direction B tokens carry the palette; composition and geometry are lakeview's. */
@@ -96,7 +96,7 @@ body.is-loading { overflow: hidden; }
 .mono { font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; color: var(--muted); }
 .split-line { display: block; will-change: transform; }
 
-/* ---------- headings: lakeview grammar — grotesk with a muted ITALIC serif accent ---------- */
+/* ---------- headings: lakeview grammar - grotesk with a muted ITALIC serif accent ---------- */
 .h-sec {
   font-family: var(--sans); font-weight: 400;
   font-size: clamp(2.25rem, 4.6vw, 4rem); line-height: 1.12;
@@ -275,7 +275,7 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 .tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease); }
 .tile:hover img { transform: scale(1.05); }
 .tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(18, 21, 26, 0.62), rgba(18, 21, 26, 0.08) 55%); }
-/* no supplier photograph published for this region — a designed typographic
+/* no supplier photograph published for this region - a designed typographic
    tile, never stock or generated filler */
 .tile--ink { background: var(--band-ink); }
 .tile--ink::after { background: none; }
@@ -403,7 +403,7 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 @media (max-width: 900px) { .operators__list { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 559px) { .operators__list { grid-template-columns: 1fr; } }
 
-/* "or start with what" — real category routes with real counts */
+/* "or start with what" - real category routes with real counts */
 .kinds { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
 .kind {
   display: flex; align-items: center; gap: 0.75rem;

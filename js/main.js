@@ -1,4 +1,4 @@
-/* VISITING ICELAND — lakeview composition, vita-travel motion system (verbatim values,
+/* VISITING ICELAND - lakeview composition, vita-travel motion system (verbatim values,
    see _docs/vita-travel-teardown.md). All numbers computed from _data/*.json. */
 (async function () {
   // The catalogue is fetched now but awaited LATER: the opening reveal must
@@ -141,7 +141,7 @@
 
     // Phase 1 (the wordmark moment) happens on the loader's little photo window:
     // it never changes size, it OPENS by clip-path, and its image is positioned
-    // to show the exact centre crop the hero shows — so it reads as a peephole
+    // to show the exact centre crop the hero shows - so it reads as a peephole
     // onto the page that is already behind it.
     const sizeWindow = () => {
       const fr = frameEl.getBoundingClientRect();
@@ -151,7 +151,7 @@
     sizeWindow();
 
     // Phase 2: the loader hands over BEFORE anything grows, and the expansion is
-    // then performed on the REAL hero via clip-path — the pixels under the window
+    // then performed on the REAL hero via clip-path - the pixels under the window
     // are the live film the whole way, so there is nothing to "snap" between.
     // Scrim, nav, chip, headline, paragraph and button ride the same timeline.
     // two-stage handoff: at `handoff` the loader's ground and window disappear
@@ -181,7 +181,7 @@
       .fromTo(".loader_word--a", { x: "0em" }, { x: "-0.6em", duration: 1.25 }, "<")
       .fromTo(".loader_word--b", { x: "0em" }, { x: "0.6em", duration: 1.25 }, "<")
       // hand over: loader disappears onto pixels that are already identical
-      // the rise is done, so release the masks — the words must dissolve in the
+      // the rise is done, so release the masks - the words must dissolve in the
       // open, not slide out of the clip that made the rise possible
       .set(".loader_word", { overflow: "visible" })
       .addLabel("open", ">0.12")                      // a beat on the composed wordmark
@@ -231,19 +231,19 @@
   // the frame. Verified by eye; never surface these. Ómar should ask the
   // operators for clean files (see _docs/visiting-iceland-booking-scope.md).
   const WATERMARKED = new Set([
-    4772,    // Glacier Lagoon Expedition — "NORÐURFLUG" + Islandsmyndir.is
-    2905,    // Essential Iceland — "© Rafn S…" lower right
-    6979,    // Northern Lights ATV — ATV operator mark
-    1391,    // Reykjavik Summit — NORÐURFLUG + Islandsmyndir.is
-    4770,    // Fire & Ice — NORÐURFLUG + Islandsmyndir.is
-    336790,  // Hunting Film Locations — "NEW TOUR" banner + NORÐURFLUG
+    4772,    // Glacier Lagoon Expedition , "NORÐURFLUG" + Islandsmyndir.is
+    2905,    // Essential Iceland , "© Rafn S…" lower right
+    6979,    // Northern Lights ATV , ATV operator mark
+    1391,    // Reykjavik Summit , NORÐURFLUG + Islandsmyndir.is
+    4770,    // Fire & Ice , NORÐURFLUG + Islandsmyndir.is
+    336790,  // Hunting Film Locations , "NEW TOUR" banner + NORÐURFLUG
   ]);       // clean Norðurflug frames verified by eye: 1406, 2930, 1407
   const used = new Set(WATERMARKED);
   const claim = p => { used.add(p.id); return p; };
 
   // ---------------- media assignments (all real supplier photos, no repeats) ----------------
   const byId = id => products.find(p => p.id === id);
-  const heroPick = claim(byId(1035949));                    // Kirkjufell sunset — the film's still
+  const heroPick = claim(byId(1035949));                    // Kirkjufell sunset , the film's still
   const ctaPick = claim(byId(880412));                      // humpbacks off Reykjavík
   const aboutTall = claim(byId(679628));                    // Golden Circle luxury
   const aboutPair = [claim(byId(853811)), claim(byId(1035331))]; // Akureyri whales · Silver Circle
@@ -285,7 +285,7 @@
   };
   // Tiles are ordered by catalogue size (the wide slot goes to the biggest
   // region, so the asymmetry carries information). A region only earns a tile
-  // if its operators have published a photograph — Westfjords' single tour has
+  // if its operators have published a photograph - Westfjords' single tour has
   // none, so it lives in the catalogue rather than as a blank hero tile.
   const regions = REGIONS
     .filter(r => regionProducts[r.id].length > 0)
