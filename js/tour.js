@@ -6,7 +6,7 @@
   const root = document.getElementById('tour');
   if (!id) { root.innerHTML = '<p class="tour__loading mono">No experience selected.</p>'; return; }
 
-  const isk = n => n == null ? '—' : n.toLocaleString('en-US').replace(/,/g, '.') + ' ISK';
+  const isk = n => n == null ? '0 ISK' : n.toLocaleString('en-US').replace(/,/g, '.') + ' ISK';
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -133,7 +133,7 @@
           <div class="pax" id="pax"></div>
         </div>
 
-        <div class="book__total"><span class="lbl">Total</span> <span class="amt" id="total">—</span></div>
+        <div class="book__total"><span class="lbl">Total</span> <span class="amt" id="total">0 ISK</span></div>
         <button class="btn btn--ink book__cta" id="cta">Continue to checkout <span class="arr">→</span></button>
         <p class="book__err" id="err" hidden></p>
         <p class="book__note">${esc(cancelLine(product.cancellation))}</p>
@@ -192,7 +192,7 @@
   }
   function drawTotal() {
     const n = paxTotal();
-    totalEl.textContent = n ? isk(total()) : '—';
+    totalEl.textContent = isk(n ? total() : 0);
     const min = state.departure ? state.departure.minParticipants : 1;
     const ok = state.departure && n >= Math.max(1, min);
     cta.disabled = !ok;

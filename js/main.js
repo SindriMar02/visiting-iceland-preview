@@ -249,12 +249,12 @@
   const aboutPair = [claim(byId(853811)), claim(byId(1035331))]; // Akureyri whales · Silver Circle
   const whyPicks = [claim(byId(6937)), claim(byId(1030324))];    // Superview ATV · Glacier lagoon
 
-  document.getElementById("aboutTall").innerHTML = `<img src="${photo(aboutTall, 1200)}" alt="${aboutTall.title.trim()} — ${aboutTall.vendor}" loading="lazy" width="900" height="1000">`;
+  document.getElementById("aboutTall").innerHTML = `<img src="${photo(aboutTall, 1200)}" alt="${aboutTall.title.trim()}, by ${aboutTall.vendor}" loading="lazy" width="900" height="1000">`;
   document.getElementById("aboutPair").innerHTML = aboutPair.map(p =>
-    `<figure><img src="${photo(p, 800)}" alt="${p.title.trim()} — ${p.vendor}" loading="lazy" width="600" height="490"></figure>`).join("");
+    `<figure><img src="${photo(p, 800)}" alt="${p.title.trim()}, by ${p.vendor}" loading="lazy" width="600" height="490"></figure>`).join("");
   document.getElementById("whyPhotos").innerHTML = whyPicks.map(p =>
-    `<figure><img src="${photo(p, 800)}" alt="${p.title.trim()} — ${p.vendor}" loading="lazy" width="600" height="500"></figure>`).join("");
-  document.getElementById("ctaMedia").innerHTML = `<img src="${photo(ctaPick, 2400)}" alt="${ctaPick.title.trim()} — ${ctaPick.vendor}" loading="lazy" width="2400" height="1600">`;
+    `<figure><img src="${photo(p, 800)}" alt="${p.title.trim()}, by ${p.vendor}" loading="lazy" width="600" height="500"></figure>`).join("");
+  document.getElementById("ctaMedia").innerHTML = `<img src="${photo(ctaPick, 2400)}" alt="${ctaPick.title.trim()}, by ${ctaPick.vendor}" loading="lazy" width="2400" height="1600">`;
 
   // ---------------- destinations: honest region tiles in lakeview's asymmetric rows ----------------
   const REGIONS = [
@@ -312,9 +312,9 @@
   const operators = [...new Set(products.map(p => p.vendor))];
   const depSet = new Set(Object.values(places.products).map(x => x.departure).filter(Boolean));
   document.getElementById("counters").innerHTML = [
-    [products.length, true, "bookable experiences in the guide"],
+    [products.length, true, "experiences you can book"],
     [operators.length, false, "Icelandic operators"],
-    [depSet.size, false, "real departure points"],
+    [depSet.size, false, "departure points"],
   ].map(([n, plus, label]) => `<div><dd data-count="${n}">0${plus ? ' <span class="plus">+</span>' : ""}</dd><dt>${label}</dt></div>`).join("");
 
   // ---------------- experience cards: lakeview grid × vita featured internals ----------------
@@ -357,11 +357,11 @@
   document.getElementById("cards").innerHTML = featured.map(cardHTML).join("") +
     `<div class="card card--all" data-card-all>
       <div>
-        <p class="eyebrow-plain">Explore the guide</p>
-        <h3>All ${products.length} experiences, in one place</h3>
-        <p>Region by region, operator by operator. Availability is the operators' own.</p>
+        <p class="eyebrow-plain">The full guide</p>
+        <h3>All ${products.length} experiences</h3>
+        <p>Every region, every operator, in one catalogue.</p>
       </div>
-      <a class="btn btn--ink" href="#top">All experiences <span class="arr">→</span></a>
+      <a class="btn btn--ink" href="#top">Open the catalogue <span class="arr">→</span></a>
     </div>`;
 
   // ---------------- "or start with what": real category routes, real counts ----------------
@@ -448,7 +448,7 @@
     if (byV[p.vendor] <= 3 && gal.length < 9) gal.push(p);
   }
   const galFig = (p, tall) =>
-    `<figure class="gallery__item"><img src="${photo(p, 900)}" alt="${p.title.trim()} — ${p.vendor}" loading="lazy" width="600" height="${tall ? 760 : 440}"></figure>`;
+    `<figure class="gallery__item"><img src="${photo(p, 900)}" alt="${p.title.trim()}, by ${p.vendor}" loading="lazy" width="600" height="${tall ? 760 : 440}"></figure>`;
   const cols = [gal.slice(0, 3), gal.slice(3, 6), gal.slice(6, 9)];
   document.getElementById("galleryGrid").innerHTML = cols.map((col, c) =>
     `<div class="gallery__col" data-col="${c}">${col.map((p, i) => galFig(p, (i + c) % 2 === 1)).join("")}</div>`).join("");
