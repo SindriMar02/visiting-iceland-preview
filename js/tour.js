@@ -71,7 +71,9 @@
   const cancelLine = c => {
     if (!c || !c.rules || !c.rules.length) return 'Cancellation terms are set by the operator.';
     const r = c.rules[0];
-    return `Free cancellation up to ${r.cutoffHours} hours before departure. After that the operator charges ${r.charge}${r.type === 'percentage' ? '%' : ' ISK'}.`;
+    const h = r.cutoffHours;
+    const when = h >= 48 ? `${Math.round(h / 24)} days` : `${h} hours`;
+    return `Free cancellation up to ${when} before departure. After that the operator charges ${r.charge}${r.type === 'percentage' ? '%' : ' ISK'}.`;
   };
 
   root.removeAttribute('aria-busy');
@@ -127,7 +129,7 @@
           <div class="times" id="times"></div>
         </div>
         <div class="book__step">
-          <h3>Travellers</h3>
+          <h3>${cats.some(c => c.ageQualified) ? 'Travellers' : 'Options'}</h3>
           <div class="pax" id="pax"></div>
         </div>
 
