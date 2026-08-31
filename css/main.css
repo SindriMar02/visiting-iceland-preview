@@ -459,3 +459,11 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 
 /* iOS: inputs never below 16px */
 @media (pointer: coarse) { input, select, textarea { font-size: 1rem; } }
+
+/* ---- touch targets: 44px minimum on coarse pointers (Apple HIG / WCAG) ---- */
+@media (pointer: coarse) {
+  .hero__wordmark, .nav__wordmark { display: inline-flex; align-items: center; min-height: 44px; }
+  .mobile-menu nav a { min-height: 48px; display: flex; align-items: center; }
+  .footer__nav a, .footer__legal a { display: inline-flex; align-items: center; min-height: 44px; }
+  .kind { min-height: 48px; }
+}

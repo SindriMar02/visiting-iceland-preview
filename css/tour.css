@@ -110,3 +110,39 @@
 .sk--dates { height: 68px; margin-top: 0.75rem; }
 .sk--times { height: 40px; margin-top: 0.75rem; }
 .book__hand--note { margin-top: 0.6rem; background: transparent; border: 1px solid var(--hairline); }
+
+/* ---- tour-page header: must exist at EVERY width (the landing page's nav is
+   hidden on mobile because the burger takes over, but the tour page has no
+   burger, so hiding it left mobile with no navigation and no way back) ---- */
+@media (max-width: 767px) {
+  .nav--tour { display: block; }
+  .nav--tour .nav__links, .nav--tour .nav__wordmark, .nav--tour .nav__cta { display: none; }
+  .nav--tour .nav__back { display: inline-flex; }
+  .nav--tour .nav__inner { justify-content: flex-start; height: 60px; }
+}
+.nav__back { display: none; align-items: center; gap: 0.55rem; text-decoration: none; font-size: 0.9375rem; font-weight: 500; color: var(--ink); }
+.nav__back-arrow { display: inline-block; transition: transform 0.35s var(--ease); }
+.nav__back:hover .nav__back-arrow { transform: translateX(-3px); }
+
+/* ---- mobile overflow: grid and flex children default to min-width:auto, so a
+   wide child (the 60-button date strip) refuses to shrink and pushes the page
+   sideways. These let the columns actually be narrower than their content. ---- */
+.tour__body { min-width: 0; }
+.tour__body > * { min-width: 0; }
+.book { min-width: 0; max-width: 100%; }
+.dates { min-width: 0; max-width: 100%; }
+.tour__meta, .tour__facts { min-width: 0; }
+@media (max-width: 767px) {
+  .tour-page { padding-top: 60px; }
+  .book { position: static; }
+}
+
+/* ---- touch targets: 44px minimum on coarse pointers (Apple HIG / WCAG) ---- */
+@media (pointer: coarse) {
+  .nav__back { min-height: 44px; }
+  .time { min-height: 44px; }
+  .date { min-height: 60px; }
+  .stepper button { width: 44px; height: 44px; }
+  .tour__crumb a { display: inline-block; padding-block: 0.6rem; }
+}
+@media (pointer: coarse) { .tour__crumb a, .tour__crumb { min-height: 44px; display: inline-flex; align-items: center; } }
