@@ -1,0 +1,41 @@
+{
+ "capturedAt": "2026-08-31T18:56:16.053Z",
+ "note": "Static snapshot of live Bókun data for the hosted preview. The server build reads Bókun in real time.",
+ "products": [
+  {
+   "id": 906941,
+   "title": "Private Combo 2in1 tour Golden Circle - Northern light hunt 12h",
+   "vendor": "Icelimo Luxury Travel"
+  },
+  {
+   "id": 1035295,
+   "title": "Iceland South Coast Day Tour From Reykjavik",
+   "vendor": "IceTransfer.is"
+  },
+  {
+   "id": 1406,
+   "title": "Geothermal Helicopter Tour",
+   "vendor": "Norðurflug Helicopter Tours"
+  },
+  {
+   "id": 696473,
+   "title": "Best Value Whale Watching tour from Reykjavik",
+   "vendor": "Reykjavik Sailors"
+  },
+  {
+   "id": 79042,
+   "title": "Úti Lasertag",
+   "vendor": "Skemmtigarðurinn Grafarvogi"
+  },
+  {
+   "id": 9706,
+   "title": "Midnight Sun - Viking way ATV Adventure with transfer from Reykjavik",
+   "vendor": "Action Adventures"
+  },
+  {
+   "id": 679643,
+   "title": "Private luxury South Coast tour 10h",
+   "vendor": "Icelimo Luxury Travel"
+  }
+ ]
+}

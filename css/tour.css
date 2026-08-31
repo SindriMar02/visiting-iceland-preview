@@ -1,0 +1,112 @@
+/* Product + booking page — same language as the landing (lakeview composition,
+   direction B tokens). Everything here runs on real Bókun data. */
+
+.tour-page { padding-top: 68px; }
+.tour { max-width: 1360px; margin-inline: auto; padding: clamp(2rem, 4vw, 3.5rem) var(--gutter) 6rem; }
+.tour__loading { padding-block: 6rem; text-align: center; }
+
+/* ---- head ---- */
+.tour__crumb { display: flex; gap: 0.5rem; align-items: center; color: var(--muted); font-size: 0.875rem; }
+.tour__crumb a { text-decoration: none; }
+.tour__crumb a:hover { color: var(--accent); }
+.tour__title { font-family: var(--sans); font-weight: 400; font-size: clamp(2rem, 4.2vw, 3.5rem); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); margin-top: 0.9rem; max-width: 20ch; }
+.tour__meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1rem; color: var(--muted); }
+.tour__meta .mono { color: var(--muted); }
+
+/* ---- gallery ---- */
+.tour__gallery { display: grid; grid-template-columns: 2fr 1fr; gap: 0.9rem; margin-top: 2rem; }
+.tour__gallery figure { border-radius: var(--r-card); overflow: hidden; }
+.tour__gallery img { width: 100%; height: 100%; object-fit: cover; }
+.tour__gallery .g-main { height: clamp(320px, 46vw, 560px); }
+.tour__gallery .g-side { display: grid; gap: 0.9rem; }
+.tour__gallery .g-side figure { height: calc((clamp(320px, 46vw, 560px) - 0.9rem) / 2); }
+@media (max-width: 767px) { .tour__gallery { grid-template-columns: 1fr; } .tour__gallery .g-side { display: none; } }
+
+/* ---- body split ---- */
+.tour__body { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(2rem, 4vw, 4rem); margin-top: 3rem; align-items: start; }
+@media (max-width: 900px) { .tour__body { grid-template-columns: 1fr; } }
+
+.tour__section + .tour__section { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--hairline); }
+.tour__section h2 { font-family: var(--sans); font-weight: 500; font-size: 1.375rem; color: var(--ink); }
+.tour__section p { margin-top: 0.75rem; max-width: 62ch; }
+.tour__facts { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 2rem; margin-top: 1.25rem; }
+.tour__facts li { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--hairline); }
+.tour__facts dt, .tour__facts .k { color: var(--muted); font-size: 0.9375rem; }
+.tour__facts .v { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink); text-align: right; }
+@media (max-width: 599px) { .tour__facts { grid-template-columns: 1fr; } }
+
+/* ---- booking panel ---- */
+.book {
+  position: sticky; top: 92px;
+  background: var(--surface); border-radius: var(--r-card);
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  box-shadow: 0 18px 46px rgba(18, 21, 26, 0.07);
+}
+.book__from { display: flex; align-items: baseline; gap: 0.5rem; }
+.book__from .lbl { color: var(--muted); font-size: 0.9375rem; }
+.book__from .amt { font-family: var(--mono); font-size: 1.5rem; color: var(--ink); }
+.book__step { margin-top: 1.5rem; }
+.book__step h3 { font-size: 0.75rem; font-family: var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+/* date strip */
+.dates { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.4rem; margin-top: 0.75rem; scrollbar-width: none; }
+.dates::-webkit-scrollbar { display: none; }
+.date {
+  flex: none; min-width: 74px; padding: 0.6rem 0.7rem; border-radius: 10px;
+  border: 1px solid var(--hairline); background: var(--surface); cursor: pointer;
+  text-align: center; transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.date:hover { border-color: var(--ink); transform: translateY(-2px); }
+.date.is-on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.date .dow { display: block; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.date.is-on .dow { color: rgba(255,255,255,0.7); }
+.date .dnum { display: block; font-family: var(--mono); font-size: 1.05rem; margin-top: 0.15rem; }
+
+/* departure times */
+.times { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.time {
+  padding: 0.55rem 0.9rem; border-radius: 999px; border: 1px solid var(--hairline);
+  background: var(--surface); cursor: pointer; font-size: 0.9375rem;
+  display: flex; align-items: baseline; gap: 0.5rem;
+  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
+}
+.time:hover:not(:disabled) { border-color: var(--ink); }
+.time.is-on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.time .seats { font-family: var(--mono); font-size: 0.6875rem; color: var(--muted); }
+.time.is-on .seats { color: rgba(255,255,255,0.75); }
+.time:disabled { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+.time.is-low .seats { color: #9A3412; }
+
+/* passengers */
+.pax { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 0.75rem; }
+.pax__row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.pax__row .t { font-size: 0.9375rem; color: var(--ink); }
+.pax__row .sub { display: block; font-size: 0.8125rem; color: var(--muted); }
+.stepper { display: flex; align-items: center; gap: 0.75rem; }
+.stepper button {
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--hairline);
+  background: var(--surface); cursor: pointer; font-size: 1.05rem; line-height: 1; color: var(--ink);
+  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
+}
+.stepper button:hover:not(:disabled) { border-color: var(--ink); }
+.stepper button:disabled { opacity: 0.35; cursor: not-allowed; }
+.stepper .n { font-family: var(--mono); min-width: 1.5ch; text-align: center; }
+
+/* total + cta */
+.book__total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--hairline); }
+.book__total .lbl { color: var(--muted); }
+.book__total .amt { font-family: var(--mono); font-size: 1.5rem; color: var(--ink); }
+.book__cta { width: 100%; justify-content: center; margin-top: 1rem; }
+.book__cta:disabled { opacity: 0.4; cursor: not-allowed; }
+.book__note { margin-top: 0.9rem; font-size: 0.8125rem; color: var(--muted); text-align: center; line-height: 1.5; }
+.book__err { margin-top: 0.75rem; font-size: 0.875rem; color: #9A3412; }
+.book__hand { margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 10px; background: var(--tint); font-size: 0.8125rem; color: var(--body); line-height: 1.5; }
+.book__hand b { color: var(--ink); font-weight: 600; }
+
+/* skeletons */
+.sk { background: linear-gradient(90deg, var(--tint) 25%, #E4E7EC 37%, var(--tint) 63%); background-size: 400% 100%; animation: sk 1.4s ease infinite; border-radius: 8px; }
+@keyframes sk { 0% { background-position: 100% 50% } 100% { background-position: 0 50% } }
+@media (prefers-reduced-motion: reduce) { .sk { animation: none } }
+.sk--dates { height: 68px; margin-top: 0.75rem; }
+.sk--times { height: 40px; margin-top: 0.75rem; }
+.book__hand--note { margin-top: 0.6rem; background: transparent; border: 1px solid var(--hairline); }

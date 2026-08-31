@@ -1,0 +1,766 @@
+{
+  "generated": "2026-08-31",
+  "note": "departures = canonical physical departure points from Bókun `places`; destinations = extracted from supplier titles only. Products with empty destinations genuinely name no place — do not invent one.",
+  "departures": {
+    "special-tours-reykjavik": {
+      "label": "Old Harbour, Reykjavík",
+      "detail": "Special Tours, Geirsgata",
+      "region": "capital"
+    },
+    "special-tours-akureyri": {
+      "label": "Akureyri Harbour",
+      "detail": "Special Tours, Oddeyrarbót",
+      "region": "north"
+    },
+    "nordurflug-heliport": {
+      "label": "Reykjavík Heliport",
+      "detail": "Norðurflug, Nauthólsvegur 58",
+      "region": "capital"
+    },
+    "skemmtigardurinn": {
+      "label": "Grafarvogur, Reykjavík",
+      "detail": "Skemmtigarðurinn",
+      "region": "capital"
+    },
+    "kef-airport": {
+      "label": "Keflavík Airport (KEF)",
+      "detail": null,
+      "region": "reykjanes"
+    },
+    "rvk-airport": {
+      "label": "Reykjavík Airport (RKV)",
+      "detail": null,
+      "region": "capital"
+    },
+    "akureyri-airport": {
+      "label": "Akureyri Airport (AEY)",
+      "detail": null,
+      "region": "north"
+    },
+    "reykjavik": {
+      "label": "Reykjavík",
+      "detail": "hotel pickup / downtown",
+      "region": "capital"
+    },
+    "akureyri": {
+      "label": "Akureyri",
+      "detail": null,
+      "region": "north"
+    },
+    "blue-lagoon": {
+      "label": "Blue Lagoon, Grindavík",
+      "detail": null,
+      "region": "reykjanes"
+    },
+    "hvammsvik": {
+      "label": "Hvammsvík Hot Springs",
+      "detail": null,
+      "region": "west"
+    },
+    "mosfellsbaer": {
+      "label": "Mosfellsbær",
+      "detail": "Action Adventures base",
+      "region": "capital"
+    },
+    "selfoss": {
+      "label": "Selfoss",
+      "detail": null,
+      "region": "south"
+    },
+    "hofn": {
+      "label": "Höfn",
+      "detail": "Jökulsárlón boat-tour base",
+      "region": "south"
+    },
+    "grundarfjordur": {
+      "label": "Grundarfjörður",
+      "detail": "Snæfellsnes",
+      "region": "west"
+    },
+    "borgarfjordur-eystri": {
+      "label": "Borgarfjörður Eystri",
+      "detail": "Fjord Bikes",
+      "region": "east"
+    },
+    "reykjanes-lighthouse": {
+      "label": "Reykjanes Lighthouse",
+      "detail": null,
+      "region": "reykjanes"
+    },
+    "thingvellir": {
+      "label": "Þingvellir National Park",
+      "detail": null,
+      "region": "golden-circle"
+    },
+    "seljalandsfoss": {
+      "label": "Seljalandsfoss",
+      "detail": null,
+      "region": "south"
+    }
+  },
+  "destinations": {
+    "reykjavik": {
+      "label": "Reykjavík",
+      "region": "capital"
+    },
+    "faxafloi": {
+      "label": "Faxaflói Bay",
+      "region": "capital"
+    },
+    "golden-circle": {
+      "label": "Golden Circle",
+      "region": "golden-circle"
+    },
+    "silver-circle": {
+      "label": "Silver Circle",
+      "region": "west"
+    },
+    "diamond-circle": {
+      "label": "Diamond Circle",
+      "region": "north"
+    },
+    "blue-lagoon": {
+      "label": "Blue Lagoon",
+      "region": "reykjanes"
+    },
+    "reykjanes": {
+      "label": "Reykjanes Peninsula",
+      "region": "reykjanes"
+    },
+    "kef-airport": {
+      "label": "Keflavík Airport",
+      "region": "reykjanes"
+    },
+    "south-coast": {
+      "label": "South Coast",
+      "region": "south"
+    },
+    "jokulsarlon": {
+      "label": "Jökulsárlón & Diamond Beach",
+      "region": "south"
+    },
+    "westman-islands": {
+      "label": "Westman Islands",
+      "region": "south"
+    },
+    "snaefellsnes": {
+      "label": "Snæfellsnes Peninsula",
+      "region": "west"
+    },
+    "husafell": {
+      "label": "Húsafell",
+      "region": "west"
+    },
+    "hvammsvik": {
+      "label": "Hvammsvík Hot Springs",
+      "region": "west"
+    },
+    "akureyri": {
+      "label": "Akureyri",
+      "region": "north"
+    },
+    "myvatn": {
+      "label": "Mývatn",
+      "region": "north"
+    },
+    "westfjords": {
+      "label": "Westfjords",
+      "region": "westfjords"
+    },
+    "thingvellir": {
+      "label": "Þingvellir",
+      "region": "golden-circle"
+    },
+    "grafarvogur": {
+      "label": "Grafarvogur Park",
+      "region": "capital"
+    }
+  },
+  "products": {
+    "350": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "487": {
+      "departure": "reykjavik",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "488": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "1041": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "1391": {
+      "departure": "nordurflug-heliport",
+      "destinations": [
+        "reykjavik"
+      ]
+    },
+    "1406": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "1407": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "2905": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "2930": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "4769": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "4770": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "4772": {
+      "departure": "nordurflug-heliport",
+      "destinations": [
+        "jokulsarlon"
+      ]
+    },
+    "4773": {
+      "departure": "nordurflug-heliport",
+      "destinations": [
+        "westfjords"
+      ]
+    },
+    "4775": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "5545": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "5547": {
+      "departure": "nordurflug-heliport",
+      "destinations": [
+        "myvatn"
+      ]
+    },
+    "6575": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "6637": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "6937": {
+      "departure": "mosfellsbaer",
+      "destinations": []
+    },
+    "6951": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "6979": {
+      "departure": "mosfellsbaer",
+      "destinations": []
+    },
+    "9706": {
+      "departure": "mosfellsbaer",
+      "destinations": []
+    },
+    "16701": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "17263": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "17850": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "27576": {
+      "departure": "reykjavik",
+      "destinations": [
+        "husafell"
+      ]
+    },
+    "67729": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "79042": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "79045": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "80063": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "80111": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "80133": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "80227": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "80257": {
+      "departure": "skemmtigardurinn",
+      "destinations": [
+        "grafarvogur"
+      ]
+    },
+    "155181": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "155286": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "155331": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "182379": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "213069": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "336790": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "648263": {
+      "departure": "nordurflug-heliport",
+      "destinations": []
+    },
+    "657507": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "678221": {
+      "departure": "rvk-airport",
+      "destinations": []
+    },
+    "678432": {
+      "departure": "akureyri",
+      "destinations": [
+        "akureyri"
+      ]
+    },
+    "678435": {
+      "departure": "akureyri",
+      "destinations": [
+        "diamond-circle",
+        "akureyri"
+      ]
+    },
+    "679602": {
+      "departure": "reykjavik",
+      "destinations": [
+        "reykjavik"
+      ]
+    },
+    "679603": {
+      "departure": "reykjavik",
+      "destinations": [
+        "reykjavik"
+      ]
+    },
+    "679628": {
+      "departure": "reykjavik",
+      "destinations": [
+        "golden-circle"
+      ]
+    },
+    "679643": {
+      "departure": "seljalandsfoss",
+      "destinations": [
+        "south-coast"
+      ]
+    },
+    "679651": {
+      "departure": "reykjavik",
+      "destinations": [
+        "snaefellsnes"
+      ]
+    },
+    "679676": {
+      "departure": "reykjavik",
+      "destinations": [
+        "westman-islands"
+      ]
+    },
+    "679889": {
+      "departure": "akureyri",
+      "destinations": [
+        "akureyri"
+      ]
+    },
+    "679890": {
+      "departure": "akureyri",
+      "destinations": [
+        "akureyri"
+      ]
+    },
+    "679893": {
+      "departure": "akureyri-airport",
+      "destinations": [
+        "akureyri"
+      ]
+    },
+    "679901": {
+      "departure": "reykjavik",
+      "destinations": []
+    },
+    "696473": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "763397": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "842171": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "842176": {
+      "departure": "reykjanes-lighthouse",
+      "destinations": [
+        "reykjanes"
+      ]
+    },
+    "843699": {
+      "departure": "akureyri",
+      "destinations": [
+        "akureyri"
+      ]
+    },
+    "850065": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "853811": {
+      "departure": "special-tours-akureyri",
+      "destinations": [
+        "akureyri"
+      ]
+    },
+    "863486": {
+      "departure": "nordurflug-heliport",
+      "destinations": [
+        "reykjanes"
+      ]
+    },
+    "880412": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "906941": {
+      "departure": "reykjavik",
+      "destinations": [
+        "golden-circle"
+      ]
+    },
+    "937423": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "951579": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "993491": {
+      "departure": "blue-lagoon",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "993733": {
+      "departure": "hvammsvik",
+      "destinations": [
+        "hvammsvik"
+      ]
+    },
+    "994616": {
+      "departure": "kef-airport",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "994620": {
+      "departure": "reykjavik",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "994644": {
+      "departure": "reykjavik",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "994646": {
+      "departure": "reykjavik",
+      "destinations": [
+        "golden-circle"
+      ]
+    },
+    "995890": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "995909": {
+      "departure": "reykjavik",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "996344": {
+      "departure": "blue-lagoon",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "996345": {
+      "departure": "blue-lagoon",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "996369": {
+      "departure": "blue-lagoon",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "996934": {
+      "departure": "hvammsvik",
+      "destinations": [
+        "hvammsvik"
+      ]
+    },
+    "996948": {
+      "departure": "hvammsvik",
+      "destinations": [
+        "hvammsvik"
+      ]
+    },
+    "996954": {
+      "departure": "hvammsvik",
+      "destinations": [
+        "hvammsvik"
+      ]
+    },
+    "997419": {
+      "departure": "special-tours-reykjavik",
+      "destinations": [
+        "faxafloi"
+      ]
+    },
+    "1005585": {
+      "departure": "rvk-airport",
+      "destinations": [
+        "reykjavik"
+      ]
+    },
+    "1028191": {
+      "departure": "reykjavik",
+      "destinations": [
+        "golden-circle"
+      ]
+    },
+    "1030324": {
+      "departure": "hofn",
+      "destinations": [
+        "south-coast",
+        "jokulsarlon"
+      ]
+    },
+    "1030353": {
+      "departure": "thingvellir",
+      "destinations": [
+        "golden-circle",
+        "south-coast"
+      ]
+    },
+    "1033715": {
+      "departure": "reykjavik",
+      "destinations": [
+        "kef-airport"
+      ]
+    },
+    "1035295": {
+      "departure": "selfoss",
+      "destinations": [
+        "south-coast"
+      ]
+    },
+    "1035331": {
+      "departure": "borgarfjordur-eystri",
+      "destinations": [
+        "silver-circle"
+      ]
+    },
+    "1035949": {
+      "departure": "grundarfjordur",
+      "destinations": [
+        "snaefellsnes"
+      ]
+    },
+    "1036408": {
+      "departure": "kef-airport",
+      "destinations": [
+        "blue-lagoon",
+        "kef-airport"
+      ]
+    },
+    "1036410": {
+      "departure": "kef-airport",
+      "destinations": [
+        "blue-lagoon",
+        "kef-airport"
+      ]
+    },
+    "1036412": {
+      "departure": "blue-lagoon",
+      "destinations": [
+        "blue-lagoon",
+        "reykjavik"
+      ]
+    },
+    "1036416": {
+      "departure": "blue-lagoon",
+      "destinations": [
+        "blue-lagoon"
+      ]
+    },
+    "1036419": {
+      "departure": "kef-airport",
+      "destinations": [
+        "blue-lagoon",
+        "kef-airport"
+      ]
+    },
+    "1036423": {
+      "departure": "kef-airport",
+      "destinations": [
+        "blue-lagoon",
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "1036555": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport",
+        "reykjavik"
+      ]
+    },
+    "1101268": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport"
+      ]
+    },
+    "1101286": {
+      "departure": "reykjavik",
+      "destinations": [
+        "kef-airport"
+      ]
+    },
+    "1101328": {
+      "departure": "kef-airport",
+      "destinations": [
+        "kef-airport"
+      ]
+    }
+  }
+}
