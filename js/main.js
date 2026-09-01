@@ -442,23 +442,23 @@
   const galleryPicks = products
     .filter(p => p.keyPhoto && p.photos >= 3 && !used.has(p.id) && !usedCovers.has(p.keyPhoto))
     .sort((a, b) => b.photos - a.photos);
-  // TEN, not nine: the mobile view is a two-column masonry, so an odd count
-  // always strands the last photo on a row of its own.
-  const GAL_N = 10;
+  // TWELVE: divisible by 2 for the mobile row grid (6 full rows) and by 3 for
+  // the desktop parallax columns (4 each), so neither layout strands a photo.
+  const GAL_N = 12;
   const byV = {}; const gal = [];
   for (const p of galleryPicks) {
     byV[p.vendor] = (byV[p.vendor] || 0) + 1;
     if (byV[p.vendor] <= 3 && gal.length < GAL_N) gal.push(p);
   }
-  // alternate tall and short on the flat index so the two mobile columns take
-  // on near-equal height and finish level instead of ragged
-  const galFig = (p, i) =>
-    `<figure class="gallery__item"><img src="${photo(p, 900)}" alt="${p.title.trim()}, by ${p.vendor}" loading="lazy" width="600" height="${i % 2 ? 760 : 440}"></figure>`;
-  // round-robin across the three desktop parallax columns (10 becomes 4/3/3)
+  const galFig = (p, tall) =>
+    `<figure class="gallery__item"><img src="${photo(p, 900)}" alt="${p.title.trim()}, by ${p.vendor}" loading="lazy" width="600" height="${tall ? 760 : 440}"></figure>`;
+  // Every column gets the SAME tall/short rhythm, so the three desktop columns
+  // are equal height by construction rather than by luck. Balancing them by a
+  // greedy fill did not converge and left dead space under the short columns.
   const cols = [[], [], []];
-  gal.forEach((p, i) => cols[i % 3].push({ p, i }));
+  gal.forEach((p, i) => cols[i % 3].push(p));
   document.getElementById("galleryGrid").innerHTML = cols.map((col, c) =>
-    `<div class="gallery__col" data-col="${c}">${col.map(({ p, i }) => galFig(p, i)).join("")}</div>`).join("");
+    `<div class="gallery__col" data-col="${c}">${col.map((p, r) => galFig(p, r % 2 === 1)).join("")}</div>`).join("");
 
   // ---------------- chrome ----------------
   const burger = document.getElementById("burger");
