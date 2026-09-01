@@ -345,7 +345,7 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 }
 /* the label is ONE flex item: without the wrapper, space-between spreads
    "Explore" / "experience" / "→" into three evenly-gapped columns */
-.card__btn-label { white-space: nowrap; }
+.card__btn-label, .btn__label { white-space: nowrap; }
 .card:hover .card__btn { background: var(--accent); }
 .card__btn .arr { transition: transform 0.4s var(--ease); }
 .card:hover .card__btn .arr { transform: translateX(4px); }
@@ -402,11 +402,23 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 .operators__inner { padding: clamp(3rem, 6vw, 5rem) clamp(2rem, 4.5vw, 4.5rem); }
 .band-dark { background: var(--band-ink); color: var(--band-body); }
 .operators__list { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.75rem); margin-top: 3rem; }
-.op { display: flex; flex-direction: column; }
+.op { display: flex; flex-direction: column; min-width: 0; }
 .op__photo { border-radius: var(--r-card); overflow: hidden; aspect-ratio: 4 / 3; background: var(--band-surface); display: flex; align-items: center; justify-content: center; }
 .op__photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease); }
 .op:hover .op__photo img { transform: scale(1.04); }
-.op__nophoto { font-family: var(--serif); font-style: italic; color: var(--band-muted); padding: 1rem; text-align: center; }
+/* An operator with no photograph we can honestly show becomes a typographic
+   card: the plate carries the name, so the label below is dropped rather than
+   printing the operator twice. Reads as a choice, not a failed image. */
+.op__photo--empty { border: 1px solid rgba(255, 255, 255, 0.09); }
+.op__nophoto {
+  font-family: var(--serif); font-style: italic; font-size: clamp(0.8125rem, 2.2vw, 1.5rem);
+  line-height: 1.3; color: var(--band-body); padding: 0.65rem; text-align: center;
+  text-wrap: balance;
+  /* "Skemmtigarðurinn" is one unbreakable 16-character word: at 1.5rem it was
+     wider than a two-up mobile column and pushed the whole grid open. The clamp
+     keeps it inside the column; overflow-wrap is only the last-resort guard. */
+  min-width: 0; overflow-wrap: anywhere;
+}
 .op__body { padding-top: 1rem; }
 .op b { display: block; font-family: var(--sans); font-weight: 500; font-size: 1.2rem; color: var(--band-text); }
 .op__meta { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; margin-top: 0.5rem; }
@@ -513,10 +525,20 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
   .card__prop:nth-child(3) { display: none; }
   .card__btn { padding: 11px 14px; font-size: 0.8125rem; justify-content: space-between; gap: 0.4rem; }
   .card__btn .btn-word { display: none; }   /* "Explore experience" cannot fit 168px without wrapping */
-  /* the closing "all experiences" cell spans the full row so it reads as a
-     destination, not as a ninth tour */
-  .card--all { grid-column: 1 / -1; padding: 20px 22px; }
-  .card--all h3 { font-size: 1.25rem; }
+  /* Seven tours plus a full-width closing cell left the seventh card stranded
+     alone in its row. The closing cell takes the eighth slot instead, so the
+     grid ends on four even rows; the tint background keeps it reading as the
+     catalogue door rather than an eighth tour. */
+  .card--all { padding: 14px 14px 16px; }
+  .card--all .eyebrow-plain { font-size: 0.75rem; }
+  .card--all h3 { font-size: 1rem; margin-top: 0.3rem; }
+  /* the eyebrow is a <p> too - a bare "p" here silently ate "The full guide" */
+  .card--all p:not(.eyebrow-plain) { margin-top: 0.45rem; font-size: 0.8125rem; }
+  .card--all .btn {
+    margin-top: auto; padding: 11px 14px; font-size: 0.8125rem;
+    gap: 0.4rem; white-space: nowrap;
+  }
+  .card--all .btn .btn-full { display: none; }
 
   /* operators: same treatment, six full-width cards was the same problem */
   .operators__list { grid-template-columns: 1fr 1fr; gap: 0.85rem; }

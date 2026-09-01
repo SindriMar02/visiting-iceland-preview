@@ -369,7 +369,7 @@
         <h3>All ${products.length} experiences</h3>
         <p>Every region, every operator, in one catalogue.</p>
       </div>
-      <a class="btn btn--ink" href="#top">Open the catalogue <span class="arr">→</span></a>
+      <a class="btn btn--ink" href="#top"><span class="btn__label">Open<span class="btn-full"> the catalogue</span></span><span class="arr">→</span></a>
     </div>`;
 
   // ---------------- "or start with what": real category routes, real counts ----------------
@@ -441,11 +441,13 @@
 
   document.getElementById("operatorsList").innerHTML = opRows.map(r =>
     `<li class="op">
-      <div class="op__photo">${r.photo
+      <div class="op__photo${r.photo ? "" : " op__photo--empty"}">${r.photo
         ? `<img src="${r.photo}" alt="A ${r.v} experience" loading="lazy" width="600" height="420">`
         : `<span class="op__nophoto">${r.v}</span>`}</div>
       <div class="op__body">
-        <b data-lines>${r.v}</b>
+        ${/* with no photograph the plate already carries the name - repeating it
+             here printed the operator twice, one line under the other */ ""}
+        ${r.photo ? `<b data-lines>${r.v}</b>` : ""}
         <p class="op__meta">
           <span class="mono">${r.n} ${r.n === 1 ? "experience" : "experiences"}</span>
           ${r.speciality ? `<span class="mono">${r.speciality}</span>` : ""}
