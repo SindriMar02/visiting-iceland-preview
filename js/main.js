@@ -17,6 +17,21 @@
     heroVideo.play().catch(() => {});
   };
 
+  // A looping <video> goes on decoding after it scrolls away: measured still
+  // running - and still looping - at the very bottom of the page. That is a
+  // 1600x900 stream decoded for the whole time someone reads the rest of the
+  // site, for nothing anybody can see, and on a phone the heat it builds is
+  // what later shows up as jank everywhere else. Pause it once the hero has
+  // left, resume where it left off when it comes back: nothing visible changes,
+  // because there is nothing visible while it is paused.
+  const heroSection = document.querySelector(".hero");
+  if (heroSection && "IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) heroVideo.play().catch(() => {});
+      else heroVideo.pause();
+    }, { threshold: 0 }).observe(heroSection);
+  }
+
   // ================= THE VITA MOTION SYSTEM (values verbatim) =================
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const mobile = matchMedia("(max-width: 767px)").matches;
@@ -40,8 +55,15 @@
     gsap.set(s.lines, { yPercent: 100 });
     return s;
   }
+  // The line reveal is one-shot, but `.split-line` carries `will-change:
+  // transform` from CSS and nothing ever takes it back: 36 lines sat permanently
+  // promoted long after they finished moving. Hand the layer back on completion.
+  // Nothing about the animation changes - it has already ended when this runs.
   const maskIn = (tl, split, at, d = 0.7, stag = 0.08) =>
-    tl.to(split.lines, { yPercent: 0, duration: d, ease: D.ease, stagger: stag }, at);
+    tl.to(split.lines, {
+      yPercent: 0, duration: d, ease: D.ease, stagger: stag,
+      onComplete: () => gsap.set(split.lines, { willChange: "auto" }),
+    }, at);
 
   function typewriter(el) {
     const s = new SplitText(el, { type: "chars", charsClass: "tw-char" });
