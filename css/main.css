@@ -481,7 +481,7 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
   .gallery__col, .gallery__col[data-col="2"] { display: contents; }
   .gallery__item { margin-bottom: 0; aspect-ratio: 4 / 3; }
   .gallery__item img { width: 100%; height: 100%; object-fit: cover; }
-}}
+}
 
 /* ---------- 9 · footer: pointer-lit giant wordmark (Cocoon lineage) ---------- */
 .footer { padding-top: var(--section-pad); overflow: clip; }
