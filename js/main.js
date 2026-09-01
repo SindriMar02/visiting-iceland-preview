@@ -350,7 +350,7 @@
         <div class="card__props">
           ${props.map(([ic, t]) => `<span class="card__prop" data-card-prop><span class="t">${t}</span>${ic}</span>`).join("")}
         </div>
-        <span class="card__btn" data-card-btn>Explore experience <span class="arr">→</span></span>
+        <span class="card__btn" data-card-btn>Explore<span class="btn-word"> experience</span> <span class="arr">→</span></span>
       </div>
     </a>`;
   };

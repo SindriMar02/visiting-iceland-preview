@@ -337,6 +337,7 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 .card__prop .t { font-size: 0.8125rem; letter-spacing: -0.2px; color: var(--body); line-height: 1.2; }
 .card__prop svg { width: 14px; height: 14px; opacity: 0.25; flex: none; stroke: var(--ink); }
 .card__btn {
+  white-space: nowrap;
   margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;
   background: var(--ink); color: #fff; border-radius: var(--r-pill);
   padding: 13px 17px 13px 20px; font-size: 0.875rem; font-weight: 500;
@@ -498,7 +499,8 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
   /* the third property is the operator name, already on the card meta: drop it
      here so two-up cards keep an even height instead of ragged bottoms */
   .card__prop:nth-child(3) { display: none; }
-  .card__btn { padding: 10px 12px; font-size: 0.8125rem; justify-content: center; gap: 0.4rem; }
+  .card__btn { padding: 11px 14px; font-size: 0.8125rem; justify-content: space-between; gap: 0.4rem; }
+  .card__btn .btn-word { display: none; }   /* "Explore experience" cannot fit 168px without wrapping */
   /* the closing "all experiences" cell spans the full row so it reads as a
      destination, not as a ninth tour */
   .card--all { grid-column: 1 / -1; padding: 20px 22px; }
