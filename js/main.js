@@ -72,26 +72,40 @@
   };
 
   const claimed = new Set();
+  // A percentage start sits ABOVE the fold line, so anything inside the last
+  // 12% of the document can never reach "top 88%" - the page runs out of scroll
+  // first. The footer legal row never fired: the copyright and the SNDR credit
+  // sat at opacity 0 for every visitor, on every device. Recomputed on each
+  // refresh; when the wanted position is past the end of the scroll it falls
+  // back to "the element enters the viewport at all", which is always reachable.
+  // Returns a STRING, never a number: ScrollTrigger reads a returned number as
+  // an offset from the trigger, not as an absolute scroll position.
+  const reachStart = (el, pct) => () => {
+    const y = el.getBoundingClientRect().top + window.scrollY;   // refresh pins scroll to 0
+    return y - (pct / 100) * window.innerHeight > ScrollTrigger.maxScroll(window)
+      ? "top bottom" : `top ${pct}%`;
+  };
+
   function autoWire() {
     document.querySelectorAll("[data-lines], [data-fade-up], [data-tw], [data-pop]").forEach(el => {
       if (claimed.has(el)) return;
       claimed.add(el);
       if (el.hasAttribute("data-pop")) {
         gsap.set(el, { scale: 0, opacity: 0 });
-        ScrollTrigger.create({ trigger: el, start: "top 92%", once: true, onEnter: () => { const tl = gsap.timeline(); pop(tl, el, 0); } });
+        ScrollTrigger.create({ trigger: el, start: reachStart(el, 92), once: true, onEnter: () => { const tl = gsap.timeline(); pop(tl, el, 0); } });
         return;
       }
       if (mobile || el.hasAttribute("data-fade-up")) {
         gsap.set(el, { opacity: 0, y: 30 });
-        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: D.dur, ease: D.ease }) });
+        ScrollTrigger.create({ trigger: el, start: reachStart(el, 88), once: true, onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: D.dur, ease: D.ease }) });
         return;
       }
       if (el.hasAttribute("data-tw")) {
         const s = typewriter(el);
-        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => { const tl = gsap.timeline(); twIn(tl, s, 0); } });
+        ScrollTrigger.create({ trigger: el, start: reachStart(el, 88), once: true, onEnter: () => { const tl = gsap.timeline(); twIn(tl, s, 0); } });
       } else {
         const s = st(el);
-        ScrollTrigger.create({ trigger: el, start: D.start, once: true, onEnter: () => { const tl = gsap.timeline(); maskIn(tl, s, 0); } });
+        ScrollTrigger.create({ trigger: el, start: reachStart(el, 88), once: true, onEnter: () => { const tl = gsap.timeline(); maskIn(tl, s, 0); } });
       }
     });
   }
@@ -463,10 +477,18 @@
   // TWELVE: divisible by 2 for the mobile row grid (6 full rows) and by 3 for
   // the desktop parallax columns (4 each), so neither layout strands a photo.
   const GAL_N = 12;
-  const byV = {}; const gal = [];
-  for (const p of galleryPicks) {
-    byV[p.vendor] = (byV[p.vendor] || 0) + 1;
-    if (byV[p.vendor] <= 3 && gal.length < GAL_N) gal.push(p);
+  // One photo per operator per pass, not three of theirs in a row. Taking them
+  // consecutively put Reykjavik Sailors' composites at neighbouring indices, and
+  // the i % 3 column split then dropped two near-identical whale-breach frames
+  // side by side at the top of the desktop grid.
+  const byV = {};
+  galleryPicks.forEach(p => (byV[p.vendor] = byV[p.vendor] || []).push(p));
+  const gal = [];
+  for (let pass = 0; pass < 3 && gal.length < GAL_N; pass++) {
+    for (const v of Object.keys(byV)) {
+      if (gal.length >= GAL_N) break;
+      if (byV[v][pass]) gal.push(byV[v][pass]);
+    }
   }
   const galFig = (p, tall) =>
     `<figure class="gallery__item"><img src="${photo(p, 900)}" alt="${p.title.trim()}, by ${p.vendor}" loading="lazy" width="600" height="${tall ? 760 : 440}"></figure>`;

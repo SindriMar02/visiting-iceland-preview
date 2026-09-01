@@ -210,8 +210,12 @@
     <p class="footer__giant" id="footerGiant" aria-hidden="true">Visiting<br>Iceland</p>
     <div class="container footer__legal">
       <span class="legal-rule" aria-hidden="true"></span>
-      <p class="mono" data-fade-up>© 2026 Visiting Iceland</p>
-      <p class="mono" data-fade-up>Designed &amp; built by <a href="https://sndr.is" rel="noopener">SNDR Studio</a></p>
+      <!-- Deliberately NOT scroll-revealed. These sit in the last viewport-height
+           of the document, where a percentage-based trigger can never resolve, and
+           they were invisible on every device. A legal line and the studio credit
+           must not depend on an animation firing. -->
+      <p class="mono">© 2026 Visiting Iceland</p>
+      <p class="mono">Designed &amp; built by <a href="https://sndr.is" rel="noopener">SNDR Studio</a></p>
     </div>
   </footer>
 
