@@ -426,7 +426,14 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 .gallery__item img { width: 100%; height: auto; display: block; }
 .gallery { overflow: clip; }
 @media (max-width: 1023px) { .gallery__grid { grid-template-columns: 1fr 1fr; } .gallery__col[data-col="2"] { display: none; } }
-@media (max-width: 599px) { .gallery__grid { grid-template-columns: 1fr; } .gallery__col { display: flex !important; margin-top: 0 !important; } }
+/* mobile gallery: a real two-column masonry rather than one photo per screen.
+   `display: contents` dissolves the parallax column wrappers so every figure
+   joins one flow, and the varied photo heights interlock like a contact sheet. */
+@media (max-width: 599px) {
+  .gallery__grid { display: block; columns: 2; column-gap: 0.85rem; }
+  .gallery__col, .gallery__col[data-col="2"] { display: contents; }
+  .gallery__item { break-inside: avoid; margin-bottom: 0.85rem; }
+}
 
 /* ---------- 9 · footer: pointer-lit giant wordmark (Cocoon lineage) ---------- */
 .footer { padding-top: var(--section-pad); overflow: clip; }
@@ -471,4 +478,36 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
   .mobile-menu nav a { min-height: 48px; display: flex; align-items: center; }
   .footer__nav a, .footer__legal a { display: inline-flex; align-items: center; min-height: 44px; }
   .kind { min-height: 48px; }
+}
+
+/* ---- mobile: tours sit two side by side, not one per screen ----
+   A full-width card per tour turned browsing into an endless scroll. Two up
+   halves the column height and lets the eye compare price and place at a
+   glance, so the internals scale down to stay readable at ~168px wide. */
+@media (max-width: 599px) {
+  .cards { grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+  .card { padding: 8px 8px 12px; }
+  .card__body { padding: 0.75rem 0.35rem 0; gap: 0.6rem; }
+  .card__title { font-size: 1rem; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card__cost { flex-wrap: wrap; gap: 0.2rem 0.4rem; }
+  .card__cost .from { font-size: 0.8125rem; }
+  .card__cost .price { font-size: 0.875rem; }
+  .card__props { gap: 0.4rem; }
+  .card__prop .t { font-size: 0.75rem; }
+  .card__prop svg { width: 12px; height: 12px; }
+  /* the third property is the operator name, already on the card meta: drop it
+     here so two-up cards keep an even height instead of ragged bottoms */
+  .card__prop:nth-child(3) { display: none; }
+  .card__btn { padding: 10px 12px; font-size: 0.8125rem; justify-content: center; gap: 0.4rem; }
+  /* the closing "all experiences" cell spans the full row so it reads as a
+     destination, not as a ninth tour */
+  .card--all { grid-column: 1 / -1; padding: 20px 22px; }
+  .card--all h3 { font-size: 1.25rem; }
+
+  /* operators: same treatment, six full-width cards was the same problem */
+  .operators__list { grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+  .op b { font-size: 1rem; line-height: 1.25; }
+  .op__meta { gap: 0.2rem 0.6rem; }
+  .op__meta .mono { font-size: 0.6875rem; }
+  .op__body { padding-top: 0.7rem; }
 }

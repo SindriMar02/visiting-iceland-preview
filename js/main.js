@@ -685,8 +685,11 @@
 
   // ---------------- gallery: entrance (vita presets) + moving parallax columns ----------------
   [...document.querySelectorAll(".gallery__item")].forEach((el, i) => {
+    // a 200px offset leaves visible holes in the mobile masonry while items wait
+    // their turn, so phones get a gentler rise
     const big = i % 2 === 0;
-    gsap.set(el, big ? { opacity: 0, y: 200 } : { opacity: 0, scale: 0.85 });
+    gsap.set(el, mobile ? { opacity: 0, y: 24 }
+                        : (big ? { opacity: 0, y: 200 } : { opacity: 0, scale: 0.85 }));
     ScrollTrigger.create({
       trigger: el, start: "top 92%", once: true,
       onEnter: () => gsap.to(el, { opacity: 1, y: 0, scale: 1, duration: D.dur, ease: D.ease }),
