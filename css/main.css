@@ -231,7 +231,18 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 }
 .hero__media { position: absolute; inset: 0; }
 .hero__media video, .hero__media img { width: 100%; height: 100%; object-fit: cover; }
-.hero__scrim { position: absolute; inset: 0; background: rgba(18, 21, 26, 0.34); }
+/* Measured, not guessed: sampling 16 frames of the loop behind the headline,
+   the old flat 0.34 left white type at 2.50:1 on the brightest surf frames -
+   under the 3:1 floor for large text, and the 17px paragraph at 3.15:1 against
+   a 4.5:1 requirement. The base carries the headline; the foot band darkens
+   only the bottom third, where the small type sits, so the film keeps its light
+   through the middle. Worst frame of 16 sampled: 3.74:1 headline (3:1 floor for
+   large text), paragraph and CTA well clear of 4.5:1. */
+.hero__scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(18, 21, 26, 0.51) 0%, rgba(18, 21, 26, 0.51) 60%, rgba(18, 21, 26, 0.66) 100%);
+}
 .hero__nav {
   position: absolute; top: 0; left: 0; right: 0; z-index: 2;
   display: flex; align-items: center; justify-content: space-between; gap: 2rem;
@@ -252,7 +263,10 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 .hero__center { position: relative; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.6rem; margin-top: clamp(1rem, 6vh, 4rem); }
 .hero__title {
   font-family: var(--sans); font-weight: 400;
-  font-size: clamp(2.6rem, 6.4vw, 6.25rem); /* lakeview display: 100px at 1440 */
+  /* the 2.6rem floor forced five ragged lines at 390px, splitting
+     "Every Tour, Transfer" across two of them; scaling with the viewport
+     instead lets the phrase hold one line down to 360px */
+  font-size: clamp(1.85rem, 9vw, 6.25rem); /* lakeview display: 100px at 1440 */
   line-height: 1.04; letter-spacing: -0.5px; color: #fff;
 }
 .hero__title i { font-family: var(--serif); font-style: italic; font-weight: 400; color: rgba(255, 255, 255, 0.78); }
@@ -260,6 +274,7 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 .hero__para { color: rgba(255, 255, 255, 0.9); max-width: 40ch; font-size: 1.0625rem; }
 @media (max-width: 767px) {
   .hero { padding: 96px 1.25rem 1.5rem; }
+  .brk--m { display: block; }   /* empty span forces the line break; see index.html */
   .hero__links { display: none; }
   .nav__burger { display: flex; }
   .hero__foot { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
@@ -285,7 +300,15 @@ body.menu-open .mobile-menu__foot { opacity: 1; transform: translateY(0); transi
 }
 .tile--ink .tile__label b { font-family: var(--serif); font-style: italic; font-weight: 400; }
 .tile--ink .tile__go { border-color: var(--band-hairline); }
-.tile__label { position: absolute; left: 1.5rem; bottom: 1.35rem; z-index: 1; color: #fff; transition: transform 0.45s var(--ease); }
+/* The label and the arrow are both absolutely positioned, so with no right
+   boundary the long region names ("Reykjanes & Blue Lagoon", "Snæfellsnes & the
+   West") ran straight under the arrow button - at every width, desktop included.
+   Stop the label short of the arrow's gutter so it wraps instead of colliding. */
+.tile__label {
+  position: absolute; left: 1.5rem; bottom: 1.35rem; z-index: 1; color: #fff;
+  right: calc(1.35rem + 46px + 0.85rem);
+  transition: transform 0.45s var(--ease);
+}
 .tile:hover .tile__label { transform: translateY(-3px); }
 .tile__label b { display: block; font-family: var(--sans); font-weight: 500; font-size: 1.5rem; line-height: 1.2; }
 .tile__label span { font-family: var(--mono); font-size: 0.72rem; color: rgba(255, 255, 255, 0.82); }

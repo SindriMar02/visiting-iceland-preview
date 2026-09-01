@@ -86,7 +86,11 @@
 
     <div class="hero__center">
       <p class="chip" id="heroChip">A Field Guide You Can Book</p>
-      <h1 class="hero__title" id="heroTitle">Every Tour, Transfer<br>And Experience In <i>Iceland,</i><br>In One Guide</h1>
+      <!-- brk--m breaks the line on narrow screens only, where "And Experience In
+           Iceland," cannot hold one line and would strand "Iceland," on its own.
+           An empty span, NOT a <br>: SplitText reads a <br> structurally and
+           honours it even at display:none, which split the desktop H1 into four. -->
+      <h1 class="hero__title" id="heroTitle">Every Tour, Transfer<br>And Experience<span class="brk--m"></span> In <i>Iceland,</i><br>In One Guide</h1>
     </div>
 
     <div class="hero__foot">
