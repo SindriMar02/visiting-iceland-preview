@@ -238,8 +238,13 @@
     4770,    // Fire & Ice , NORÐURFLUG + Islandsmyndir.is
     336790,  // Hunting Film Locations , "NEW TOUR" banner + NORÐURFLUG
   ]);       // clean Norðurflug frames verified by eye: 1406, 2930, 1407
+  // Two axes, because two things can collide: the same PRODUCT surfacing twice,
+  // and two different products that happen to share a photograph. Every section
+  // claims through one door so a frame can never appear in two places - the
+  // operators band was repeating card photos because it only checked the second.
   const used = new Set(WATERMARKED);
-  const claim = p => { used.add(p.id); return p; };
+  const usedCovers = new Set();
+  const claim = p => { used.add(p.id); if (p.keyPhoto) usedCovers.add(p.keyPhoto); return p; };
 
   // ---------------- media assignments (all real supplier photos, no repeats) ----------------
   const byId = id => products.find(p => p.id === id);
@@ -274,14 +279,12 @@
     const regs = new Set(meta(p.id).destinations.map(destRegion));
     for (const r of regs) if (regionProducts[r]) regionProducts[r].push(p);
   }
-  const usedCovers = new Set();
   const cover = rid => {
     const pool = regionProducts[rid].filter(p => p.keyPhoto && !used.has(p.id));
     pool.sort((a, b) => (a.categories || []).includes("TRANSFERS_AND_GROUND_TRANSPORT") - (b.categories || []).includes("TRANSFERS_AND_GROUND_TRANSPORT"));
     const pick = pool.find(p => !usedCovers.has(p.keyPhoto)) || pool[0];
     if (!pick) return null;
-    usedCovers.add(pick.keyPhoto);
-    return photo(pick, 1100);
+    return photo(claim(pick), 1100);   // claim, or the card grid re-picks it
   };
   // Tiles are ordered by catalogue size (the wide slot goes to the biggest
   // region, so the asymmetry carries information). A region only earns a tile
@@ -323,7 +326,12 @@
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
     users: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M15.5 6a3 3 0 1 1 0 6M16 13.6a5.5 5.5 0 0 1 4.5 5.4"/></svg>',
   };
-  const pool = products.filter(p => p.keyPhoto && !used.has(p.id));
+  // Uncategorised products never lead the shopfront. Bókun categories are how a
+  // supplier says what a product IS, and the only products in the catalogue with
+  // none are Skemmtigarðurinn's town activity park (lasertag, archery tag,
+  // paintball) - real bookings, but they cannot represent Iceland beside the
+  // aurora and whale photography. They keep their place in the full catalogue.
+  const pool = products.filter(p => p.keyPhoto && !used.has(p.id) && (p.categories || []).length);
   const byVendor = {};
   pool.forEach(p => (byVendor[p.vendor] = byVendor[p.vendor] || []).push(p));
   Object.values(byVendor).forEach(l => l.sort((a, b) => b.photos - a.photos));
@@ -375,8 +383,11 @@
   document.getElementById("kinds").innerHTML = KINDS.map(k => {
     const list = products.filter(p => inKind(p, k));
     if (!list.length) return "";
-    const withPhoto = list.filter(p => p.keyPhoto).sort((a, b) => b.photos - a.photos);
-    const thumb = withPhoto[0] ? photo(withPhoto[0], 200) : null;
+    // these 72px thumbnails were the last section picking blind: three of them
+    // repeated a card or a gallery frame further down the page
+    const withPhoto = list.filter(p => p.keyPhoto && !WATERMARKED.has(p.id)).sort((a, b) => b.photos - a.photos);
+    const pick = withPhoto.find(p => !usedCovers.has(p.keyPhoto)) || withPhoto[0];
+    const thumb = pick ? photo(claim(pick), 200) : null;
     return `<a class="kind" href="#catalogue" data-kind>
       ${thumb ? `<img src="${thumb}" alt="" loading="lazy" width="72" height="72">` : ""}
       <span class="kind__t">${k.label}</span>
@@ -412,9 +423,14 @@
       .filter(([c, n]) => NICE[c] && n / list.length >= 0.5);
     const speciality = (major.length ? major : Object.entries(catFreq).filter(([c]) => NICE[c]))
       .sort((a, b) => (NICE[b[0]][1] - NICE[a[0]][1]) || (b[1] - a[1]))[0];
-    const pool = list.filter(p => p.keyPhoto && !WATERMARKED.has(p.id)).sort((a, b) => b.photos - a.photos);
+    // Same rule as the card grid: an uncategorised product cannot speak for an
+    // operator. Skemmtigarðurinn's only three frames are lasertag, archery tag
+    // and paintball - none of them Iceland - so they take the typographic card
+    // and keep their name, count, location and catalogue place.
+    const pool = list.filter(p => p.keyPhoto && !WATERMARKED.has(p.id) && (p.categories || []).length)
+      .sort((a, b) => b.photos - a.photos);
     const pic = pool.find(p => !usedCovers.has(p.keyPhoto)) || pool[0];
-    if (pic) usedCovers.add(pic.keyPhoto);
+    if (pic) claim(pic);
     return {
       v, n: list.length,
       from: Object.entries(freq).sort((a, b) => b[1] - a[1])[0]?.[0] || "",
